@@ -61,7 +61,7 @@ npm run dev:host      # = vite --host
 ## SuperDialer(안드로이드 앱)에 내장
 
 `window.Native.getBest()` / `window.Native.submitScore(score)` 브릿지가 있으면 자동으로 점수를 연동하고, 없으면(일반 브라우저) 조용히 무시합니다.
-빌드 결과(`dist/`)를 앱의 `assets/games/crossyroads/` 에 넣고 `games.json` 에 등록하면 됩니다.
+`scripts/export-superdialer.sh <phonecall 저장소 경로>` 가 빌드 후 `app/src/main/assets/games/crossyroads/` 에 복사하고 `games.json` 에 등록합니다.
 
 ## 구조
 
