@@ -92,7 +92,7 @@ export class Player {
     const dr = dir === 'up' ? 1 : dir === 'down' ? -1 : 0;
     const dx = dir === 'left' ? -1 : dir === 'right' ? 1 : 0;
     // 진행 방향 바라보기: 모델 앞(-z)이 이동 방향을 향하도록
-    this.targetYaw = Math.atan2(-dx, -dr);
+    this.targetYaw = Math.atan2(-dx, dr);
     const toRow = this.row + dr;
     const cur = this.world.row(this.row);
     const dest = this.world.row(toRow);
