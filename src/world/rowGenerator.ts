@@ -5,6 +5,7 @@ import {
   COIN_CHANCE_GRASS,
   COIN_CHANCE_ROAD,
   DIFFICULTY,
+  EASY,
   GRASS_MAX_OBSTACLES,
   GRASS_OBSTACLE_CHANCE,
   GRASS_SIDE_DENSITY,
@@ -90,10 +91,14 @@ export class RowGenerator {
     void d;
     // 같은 종류가 이어지도록 약간 보정
     w[this.lastKind] *= this.lastKind === 'grass' ? 0.8 : SAME_KIND_BONUS;
-    // 연속 제한
+    // 연속 제한 (초반엔 도로 연속을 더 짧게)
     (Object.keys(MAX_RUN) as RowKind[]).forEach((k) => {
-      if (this.lastKind === k && this.run >= MAX_RUN[k]) w[k] = 0;
+      const max = k === 'road' && index < EASY.shortRoadRunUntil ? EASY.shortRoadRun : MAX_RUN[k];
+      if (this.lastKind === k && this.run >= max) w[k] = 0;
     });
+    // 초반엔 강/선로가 나오지 않는다
+    if (index < EASY.riverFromRow) w.river = 0;
+    if (index < EASY.railFromRow) w.rail = 0;
     if (this.hazardChain >= MAX_HAZARD_CHAIN) {
       w.road = w.river = w.rail = 0;
     }
@@ -161,8 +166,8 @@ export class RowGenerator {
   private road(index: number): RoadSpec {
     const rng = this.rng;
     const d = difficultyAt(index);
-    const gapMul = lerp(1, DIFFICULTY.gapMinMul, d);
-    const speed = rng.range(CAR_SPEED.min, CAR_SPEED.max) * lerp(1, DIFFICULTY.speedMaxMul, d);
+    const gapMul = lerp(DIFFICULTY.startGapMul, DIFFICULTY.gapMinMul, d);
+    const speed = rng.range(CAR_SPEED.min, CAR_SPEED.max) * lerp(DIFFICULTY.startSpeedMul, DIFFICULTY.speedMaxMul, d);
     const dir = this.nextDir(this.run > 1);
     const minGap = CAR_GAP.min;
     const cars: CarSpec[] = [];
@@ -182,9 +187,9 @@ export class RowGenerator {
   private river(index: number): RiverSpec {
     const rng = this.rng;
     const d = difficultyAt(index);
-    const speed = rng.range(LOG_SPEED.min, LOG_SPEED.max) * lerp(1, Math.min(DIFFICULTY.speedMaxMul, 1.45), d);
+    const speed = rng.range(LOG_SPEED.min, LOG_SPEED.max) * lerp(DIFFICULTY.startSpeedMul, Math.min(DIFFICULTY.speedMaxMul, 1.4), d);
     const dir = this.nextDir(this.run > 1);
-    const gapMul = lerp(1, 1.3, d);
+    const gapMul = lerp(0.8, 1.3, d);
     const logs: LogSpec[] = [];
     let x = rng.range(0, 3);
     for (;;) {

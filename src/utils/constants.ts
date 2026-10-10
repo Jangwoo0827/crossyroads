@@ -29,7 +29,7 @@ export const COIN_CHANCE_ROAD = 0.08;
 
 // 도로
 export const CAR_SPEED = { min: 2.2, max: 5.2 }; // 칸/초 (난이도 1.0배 기준)
-export const CAR_GAP = { min: 3.4, max: 10 }; // 차 사이 간격 (난이도로 좁아짐)
+export const CAR_GAP = { min: 3.6, max: 10 }; // 차 사이 간격 (난이도로 좁아짐)
 export const TRUCK_CHANCE = 0.22;
 
 // 강
@@ -44,15 +44,24 @@ export const TRAIN_SPEED = 30;
 export const TRAIN_CARS = [5, 7, 9];
 export const TRAIN_CAR_LEN = 2.2;
 export const RAIL_IDLE = { min: 2.5, max: 6 }; // 기차가 없는 시간(초)
-export const RAIL_WARN = 1.6; // 경고등 점등 시간(초)
+export const RAIL_WARN = 2.0; // 경고등 점등 시간(초)
 
 // ── 난이도 ────────────────────────────────────────────
 export const DIFFICULTY = {
-  rampScore: 180, // 이 점수에서 최대 난이도
-  speedMaxMul: 1.7, // 차/통나무 속도 최대 배율(상한)
-  gapMinMul: 0.78, // 간격 축소 최대치(상한)
-  cameraSpeedBase: 0.55, // 카메라 자동 전진 속도(행/초)
-  cameraSpeedMax: 1.25,
+  rampScore: 300, // 이 점수에서 최대 난이도 (그 전까지 선형으로 서서히 상승)
+  startSpeedMul: 0.55, // 시작 시 차/통나무 속도 배율 (쉽게)
+  speedMaxMul: 1.6, // 최대 속도 배율(상한)
+  startGapMul: 1.5, // 시작 시 차 간격 배율 (넓게)
+  gapMinMul: 0.8, // 최대 난이도에서의 간격 배율(상한)
+  cameraSpeedBase: 0.3, // 카메라 자동 전진 속도(행/초): 시작
+  cameraSpeedMax: 1.0, // 최대
+};
+// 초반 완화: 이 행 번호 전에는 해당 구간이 나오지 않거나 짧게만 나온다
+export const EASY = {
+  riverFromRow: 12,
+  railFromRow: 25,
+  shortRoadRunUntil: 30, // 이 행 전에는 도로 연속을 shortRoadRun 으로 제한
+  shortRoadRun: 2,
 };
 
 // ── 판정 ──────────────────────────────────────────────
