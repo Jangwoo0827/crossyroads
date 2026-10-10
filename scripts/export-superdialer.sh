@@ -16,7 +16,7 @@ node -e '
 const fs = require("fs");
 const f = process.argv[1];
 const list = JSON.parse(fs.readFileSync(f, "utf8"));
-const entry = { id: "crossyroads", title: "횡단 대작전", description: "차·강·기차를 피해 끝없이 건너세요", path: "crossyroads/index.html", color: "#FF7A59" };
+const entry = { id: "crossyroads", title: "Crossy Chicks", description: "차·강·기차를 피해 끝없이 건너세요", path: "crossyroads/index.html", color: "#FF7A59" };
 const i = list.findIndex((g) => g.id === entry.id);
 if (i >= 0) list[i] = entry; else list.push(entry);
 fs.writeFileSync(f, JSON.stringify(list, null, 2) + "\n");
